@@ -147,7 +147,6 @@ public class RXTX {
                  *  SerialPortEvent.RI:/*Ring indicator，响铃指示
                  *  SerialPortEvent.OUTPUT_BUFFER_EMPTY:/*Output buffer is empty，输出缓冲区清空
                  */
-                case SerialPortEvent.BI:
                 case SerialPortEvent.OE:
                 case SerialPortEvent.FE:
                 case SerialPortEvent.PE:
@@ -156,6 +155,9 @@ public class RXTX {
                 case SerialPortEvent.DSR:
                 case SerialPortEvent.RI:
                 case SerialPortEvent.OUTPUT_BUFFER_EMPTY:
+                    break;
+                case SerialPortEvent.BI:
+                    LOGGER.error("break interrupt[通讯中断].");
                     break;
                 // 当有可用数据时读取数据
                 case SerialPortEvent.DATA_AVAILABLE:
