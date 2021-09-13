@@ -194,6 +194,20 @@ public class SerialUtil {
 	}
 
 	/**
+	 * 往串口发送数据
+	 *
+	 * @param serialPort
+	 *            串口对象
+	 * @param order
+	 *            待发送数据 // * @throws SendDataToSerialPortFailure 向串口发送数据失败 //
+	 *            * @throws SerialPortOutputStreamCloseFailure 关闭串口对象的输出流出错
+	 */
+	public static void sendToPort(String portName, byte[] order) {
+		SerialPort serialPort = openPort(portName, 115200);
+		sendToPort(serialPort, order);
+	}
+	
+	/**
 	 * 从串口读取数据
 	 *
 	 * @param serialPort
