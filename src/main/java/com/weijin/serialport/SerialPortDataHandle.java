@@ -1,4 +1,4 @@
-package org.txtx.demo;
+package com.weijin.serialport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
  */
 public class SerialPortDataHandle implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(SerialPortDataHandle.class);
-    private final RXTX rxtx;
+    private final RXTXSerialPortEventListener listener;
     // 线程控制标识
     private volatile boolean flag = true;
 
-    public SerialPortDataHandle(RXTX rxtx) {
-        this.rxtx = rxtx;
+    public SerialPortDataHandle(RXTXSerialPortEventListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class SerialPortDataHandle implements Runnable {
                 // 如果堵塞队列中存在数据就将其输出
                 // take() 取走BlockingQueue里排在首位的对象
                 // 若BlockingQueue为空，阻断进入等待状态直到Blocking有新的对象被加入为止
-                LOGGER.info(rxtx.take());
+                LOGGER.info(listener.take());
             }
         } catch (InterruptedException e) {
             LOGGER.error("线程执行异常", e);
