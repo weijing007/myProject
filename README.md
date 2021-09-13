@@ -10,3 +10,4 @@ rxtx-java-demo 是一个进行串口通信的工程，支持多种协议
 1.  把相应系统win/linux的ddl/so包放到jdk的JAVA_HOME/jre/bin下
 2.  工程引入相应系统的jar包
 3.  开始开发启动
+4.  https://github.com/hughwang-me/java-serial-port-rxtx-demo.git
