@@ -8,10 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 
+@Service
 public class SystemInitConfig implements CommandLineRunner, EnvironmentAware {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SystemInitConfig.class);
