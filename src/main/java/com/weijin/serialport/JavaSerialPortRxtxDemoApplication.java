@@ -11,6 +11,5 @@ public class JavaSerialPortRxtxDemoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(JavaSerialPortRxtxDemoApplication.class, args);
-		SystemInitConfig.initListener();
 	}
 }
