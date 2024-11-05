@@ -1,4 +1,4 @@
-package com.weijin.demo.websocket;
+package com.weijin.serialport;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
