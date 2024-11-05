@@ -217,15 +217,15 @@ public class SerialUtil {
 	 */
 	public static byte[] readFromPort(SerialPort serialPort) {
 		InputStream in = null;
-		byte[] bytes = null;
+		byte[] bytes = {};
 		try {
 			in = serialPort.getInputStream();
-			int bufflenth = in.available(); // 获取buffer里的数据长度
-			while (bufflenth != 0) {
-				bytes = new byte[bufflenth]; // 初始化byte数组为buffer中数据的长度
-				in.read(bytes);
-				bufflenth = in.available();
-			}
+			byte[] readBuffer = new byte[1];
+	             int bytesNum = in.read(readBuffer);
+	            while (bytesNum > 0) {
+	                bytes = concat(bytes, readBuffer);
+	                bytesNum = in.read(readBuffer);
+	            }
 		} catch (IOException e) {
 			// throw new ReadDataFromSerialPortFailure();
 		} finally {
@@ -268,4 +268,52 @@ public class SerialUtil {
 			// throw new TooManyListeners();
 		}
 	}
+	
+	/**
+	 * 将两字节数组合并为同一个
+	 * @param firstArray
+	 * @param secondArray
+	 * @return 返回合并后的字节数组
+	 */
+	public static byte[] concat(byte[] firstArray, byte[] secondArray) {
+	    if (firstArray == null || secondArray == null) {
+	        return null;
+	    }
+	    byte[] bytes = new byte[firstArray.length + secondArray.length];
+	    System.arraycopy(firstArray, 0, bytes, 0, firstArray.length);
+	    System.arraycopy(secondArray, 0, bytes, firstArray.length, secondArray.length);
+	    return bytes;
+	}
+	
+	/**
+     * 从串口读取数据
+     * @param serialPort 要读取的串口（不建议）
+     * @return 读取的数据
+     */
+    private static byte[] readData(SerialPort serialPort) {
+        InputStream is = null;
+        byte[] bytes = null;
+        try {
+            is = serialPort.getInputStream();//获得串口的输入流
+            int bufflenth = is.available();//获得数据长度
+            while (bufflenth != 0) {
+                bytes = new byte[bufflenth];//初始化byte数组
+                is.read(bytes);
+                bufflenth = is.available();
+            }
+        } catch (IOException e) {
+            //logger.error("串口异常，停止服务。", e);
+            System.exit(-1);
+        } finally {
+            try {
+                if (is != null) {
+                    is.close();
+                    is = null;
+                }
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return bytes;
+    }
 }
