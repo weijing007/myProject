@@ -1,4 +1,4 @@
-package com.weijin.serialport;
+package com.weijin.serialport.serial;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;

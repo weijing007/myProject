@@ -10,6 +10,9 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import com.weijin.serialport.serial.RXTXSerialPortEventListener;
+import com.weijin.serialport.serial.SerialUtil;
+
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 

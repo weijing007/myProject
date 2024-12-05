@@ -1,4 +1,4 @@
-package com.weijin.serialport;
+package com.weijin.serialport.websocket;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,18 +13,20 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ * 前后端交互的类实现消息的接收推送(自己发送给另一个人)
  *
- * 前后端交互的类实现消息的接收推送(自己发送给所有人(不包括自己))
- *
- * @ServerEndpoint(value = "/test/oneToMany") 前端通过此URI 和后端交互，建立连接
+ * @ServerEndpoint(value = "/test/oneToOne") 前端通过此URI 和后端交互，建立连接
  */
 @Slf4j
-@ServerEndpoint(value = "/test/oneToMany")
+@ServerEndpoint(value = "/test/oneToOne")
 @Component
-public class OneToManyWebSocket {
+public class OneToOneWebSocket {
 
 	/** 记录当前在线连接数 */
 	private static AtomicInteger onlineCount = new AtomicInteger(0);
@@ -60,8 +62,18 @@ public class OneToManyWebSocket {
 	 */
 	@OnMessage
 	public void onMessage(String message, Session session) {
-		log.info("服务端收到客户端[{}]的消息:{}", session.getId(), message);
-		this.sendMessage(message, session);
+		log.info("服务端收到客户端[{}]的消息[{}]", session.getId(), message);
+		try {
+			JSONObject myMessage = JSON.parseObject(message);
+			if (myMessage != null) {
+				Session toSession = clients.get(myMessage.getString("Userid"));
+				if (toSession != null) {
+					this.sendMessage(myMessage.getString("Message"), toSession);
+				}
+			}
+		} catch (Exception e) {
+			log.error("解析失败：{}", e);
+		}
 	}
 
 	@OnError
@@ -71,19 +83,15 @@ public class OneToManyWebSocket {
 	}
 
 	/**
-	 * 群发消息
-	 *
-	 * @param message
-	 *            消息内容
+	 * 服务端发送消息给客户端
 	 */
-	private void sendMessage(String message, Session fromSession) {
-		for (Map.Entry<String, Session> sessionEntry : clients.entrySet()) {
-			Session toSession = sessionEntry.getValue();
-			// 排除掉自己
-			if (!fromSession.getId().equals(toSession.getId())) {
-				log.info("服务端给客户端[{}]发送消息{}", toSession.getId(), message);
-				toSession.getAsyncRemote().sendText(message);
-			}
+	private void sendMessage(String message, Session toSession) {
+		try {
+			log.info("服务端给客户端[{}]发送消息[{}]", toSession.getId(), message);
+			toSession.getBasicRemote().sendText(message);
+		} catch (Exception e) {
+			log.error("服务端发送消息给客户端失败：{}", e);
 		}
 	}
+
 }

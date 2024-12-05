@@ -1,4 +1,4 @@
-package com.weijin.serialport;
+package com.weijin.serialport.serial;
 
 import java.io.IOException;
 import java.io.InputStream;

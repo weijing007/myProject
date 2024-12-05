@@ -1,4 +1,4 @@
-package com.weijin.serialport;
+package com.weijin.serialport.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

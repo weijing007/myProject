@@ -1,4 +1,4 @@
-package com.weijin.serialport;
+package com.weijin.serialport.controller;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.weijin.serialport.serial.SerialUtil;
 
 import gnu.io.CommPortIdentifier;
 import io.swagger.annotations.ApiOperation;
