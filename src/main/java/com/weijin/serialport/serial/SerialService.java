@@ -193,7 +193,7 @@ public class SerialService {
 				out = serialPort.getOutputStream();
 				out.write(order);
 				out.flush();
-				logger.info("往串口 " + serialPort.getName() + " 发送数据：" + order + " 完成...");
+				logger.info("往串口 " + serialPort.getName() + " 发送数据：" + new String(order) + " 完成...");
 			} else {
 				logger.error("gnu.io.SerialPort 为null，取消数据发送...");
 			}

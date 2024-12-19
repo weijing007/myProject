@@ -83,7 +83,7 @@ public class SerialPortDataHandle implements Runnable {
 	public static byte[] hexToByteArray(String inHex) {
 		int hexlen = inHex.length();
 		byte[] result;
-		if (hexlen % 2 == 1) {
+		if (hexlen % 2 != 0) {
 			// 奇数
 			hexlen++;
 			result = new byte[(hexlen / 2)];
